@@ -1,14 +1,5 @@
 [
     {
-        "type": "header",
-        "version": "4.9.7",
-        "comment": "Export to JSON plugin for PHPMyAdmin"
-    },
-    {
-        "type": "database",
-        "name": "audemard_results"
-    },
-    {
         "type": "table",
         "name": "results",
         "database": "audemard_results",

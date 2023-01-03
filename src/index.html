@@ -1,15 +1,23 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <title>Chart.js example</title>
-  </head>
-  <body>
+<html lang="fr">
+
+<head>
+  <title>SAE303</title>
+</head>
+
+<body>
+  <div style="width: 800px;"><canvas id="scatter"></canvas></div>
+  <script>
+
+    const req = new XMLHttpRequest();
+    req.addEventListener("load", evt => {
+      let data = JSON.parse(req.responseText);
+      console.log(data[0].data[0].name)
+    });
+    req.open("GET", "data.json");
+    req.send()
     
-    <!--<div style="width: 500px;"><canvas id="dimensions"></canvas></div><br/>-->
-    <!--<div style="width: 800px;"><canvas id="acquisitions"></canvas></div>-->
-    <div style="width: 800px;"><canvas id="scatter"></canvas></div>
-    <!--<script type="module" src="dimensions.js"></script> -->
-    <!--<script type="module" src="acquisitions.js"></script>-->
-    <script type="module" src="scatter.js"></script>
-  </body>
+  </script>
+</body>
+
 </html>
