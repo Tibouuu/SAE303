@@ -3,11 +3,13 @@ req.addEventListener("load", evt => {
   let data = JSON.parse(req.responseText);
   let tab = data[0].data
 
-  let noms = []
-  for(let i=0; i < 10; i++){
-    noms.push(tab[i].name)
+  let puzzles = []
+  for(element of tab){
+    if(puzzles.includes(element.family) == false)
+        puzzles.push(element.family)
   }
-  console.log(noms)
+
+  console.log(puzzles)
 });
 req.open("GET", "data.json");
 req.send()
