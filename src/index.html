@@ -8,25 +8,7 @@
 
 <body>
   <div style="width: 800px;"><canvas id="scatter"></canvas></div>
-  <script>
 
-    const req = new XMLHttpRequest();
-    req.addEventListener("load", evt => {
-      let data = JSON.parse(req.responseText);
-      let tab = data[0].data
-
-      let noms = []
-      for(let i=0; i < 10; i++){
-        noms.push(tab[i].name)
-      }
-      console.log(noms)
-    });
-    req.open("GET", "data.json");
-    req.send()
-
-    
-    
-  </script>
   <script src='scripts.js' defer></script>
 </body>
 
