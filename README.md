@@ -13,6 +13,7 @@ Nous avons opté pour l'utilisation de Github pour la gestion de projet, et char
   - Un camembert présentant pour un puzzle spécifique le nombre de solver ayant réussi, perdu, ou autre.
   - Un classement des solvers ayant réussi le puzzle en fonction du temps qu'ils ont mis.
   - Un histogramme qui donne le temps de chaque solver pour un puzzle, afin de pouvoir comparer plus aisément les temps de chaque réussite.
+  - Un graphique en toile d'araignée comportant les échecs, réussites et autres du puzzle ainsi que ceux de sa famille, comparés à ceux de la totalité des puzzles.
 
 __Problèmes rencontrés__
 
