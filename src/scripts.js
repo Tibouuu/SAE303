@@ -1,7 +1,31 @@
 const req = new XMLHttpRequest();
 req.addEventListener("load", evt => {
     let data = JSON.parse(req.responseText);
-    makeTableau(data)
+    makeTableau(data);
+    (async function() {
+        const data = [
+          { solver: "SAT", reussite: 43 },
+          { solver: "UNSAT", reussite: 23 },
+          { solver: "UNKNOWN", reussite: 6 },
+        ];
+      
+        new Chart(
+          document.getElementById('pie'),
+          {
+            type: 'pie',
+            data: {
+              labels: data.map(row => row.solver),
+              datasets: [
+                {
+                  label: '',
+                  data: data.map(row => row.reussite),
+                  hoverOffset: data.map(row => row.reussite)
+                }
+              ]
+            }
+          }
+        );
+      })();
 });
 req.open("GET", "https://www.cril.univ-artois.fr/~lecoutre/teaching/jssae/code5/results.json");
 req.send()
@@ -32,7 +56,27 @@ function makeTableau(data) {
         }
         liste.appendChild(family)
     }
-
-
-
 }
+
+import {
+    Chart,
+    Colors,
+    BubbleController,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Legend
+  } from 'chart.js'
+  
+  Chart.register(
+    Colors,
+    BubbleController,
+    PointElement,
+    CategoryScale,
+    LinearScale,
+    Legend
+  );
+  
+  import { Chart } from 'chart.js/auto'
+  
+
