@@ -533,12 +533,12 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"i3Wj0":[function(require,module,exports) {
 var _chartJs = require("chart.js");
-var _auto = require("chart.js/auto");
+var _auto = require("chart.js/auto"); /*import { S } from 'chart.js/dist/chunks/helpers.core';*/ 
 const req = new XMLHttpRequest();
 req.addEventListener("load", (evt)=>{
     let data = JSON.parse(req.responseText);
-    makeTableau(data);
-    let tab = data[2].data;
+    /*Appel de la liste des puzzles*/ makeTableau(data);
+    /*Récupération des données*/ let tab = data[2].data;
     const allpuzzle = tab.map(function(puzzle) {
         return puzzle.family;
     });
@@ -557,36 +557,51 @@ req.addEventListener("load", (evt)=>{
     const users = new Set(people);
     const usertab = Array.from(users);
     console.log(usertab);
-    (async function() {
-        const data = [
-            {
-                solver: "SAT",
-                reussite: 43
-            },
-            {
-                solver: "UNSAT",
-                reussite: 23
-            },
-            {
-                solver: "UNKNOWN",
-                reussite: 6
+    let recup = document.querySelectorAll("p");
+    for (p of recup){
+        let puzzle = p.textContent;
+        p.addEventListener("click", (e)=>{
+            let donnees = [];
+            for (element of tab)if (element.fullname == puzzle) donnees.push(element);
+            console.log(donnees);
+            /* Camembert */ let reussie = [];
+            let perdu = [];
+            let inconnu = [];
+            for (result of donnees){
+                if (result.status == "SAT") reussie.push(result);
+                if (result.status == "UNSAT") perdu.push(result);
+                if (result.status == "UNKNOWN") inconnu.push(result);
             }
-        ];
-        new (0, _auto.Chart)(document.getElementById("pie"), {
-            type: "pie",
-            data: {
-                labels: data.map((row)=>row.solver),
-                datasets: [
-                    {
-                        label: "",
-                        data: data.map((row)=>row.reussite),
-                        hoverOffset: data.map((row)=>row.reussite)
-                    }
-                ]
-            }
+            const data = [
+                {
+                    solver: "SAT",
+                    reussite: reussie.length
+                },
+                {
+                    solver: "UNSAT",
+                    reussite: perdu.length
+                },
+                {
+                    solver: "UNKNOWN",
+                    reussite: inconnu.length
+                }
+            ];
+            const camembert = new (0, _auto.Chart)(document.getElementById("pie"), {
+                type: "pie",
+                data: {
+                    labels: data.map((row)=>row.solver),
+                    datasets: [
+                        {
+                            label: "",
+                            data: data.map((row)=>row.reussite),
+                            hoverOffset: data.map((row)=>row.reussite)
+                        }
+                    ]
+                }
+            });
         });
-    })();
-});
+    }
+/*Création des graphiques*/ });
 req.open("GET", "https://www.cril.univ-artois.fr/~lecoutre/teaching/jssae/code5/results.json");
 req.send();
 function makeTableau(data) {
@@ -594,16 +609,16 @@ function makeTableau(data) {
     liste.innerHTML = "<h1>Puzzles - SAE303</h1>";
     let tab = data[2].data;
     let puzzles = [];
-    for (element of tab)if (puzzles.includes("<p>" + element.family + "</p>") == false) puzzles.push("<p>" + element.family + "</p>");
+    for (element of tab)if (puzzles.includes("<h2>" + element.family + "</h2>") == false) puzzles.push("<h2>" + element.family + "</h2>");
     for(let i = 0; i < puzzles.length; i++){
         let family = document.createElement("ul");
         let souspuzzles = [];
-        family.innerHTML = "<a href='#' onmouseover=document.getElementById('test').style.display=block; onmouseout=document.getElementById('test').style.display=none; >" + puzzles[i] + "</a><div id=test style=display:none; width:500px; height:500px; background-color:blue;>";
+        family.innerHTML = puzzles[i];
         for (element of tab){
-            if ("<p>" + element.family + "</p>" == puzzles[i]) {
+            if ("<h2>" + element.family + "</h2>" == puzzles[i]) {
                 if (souspuzzles.includes(element.fullname) == false) {
                     souspuzzles.push(element.fullname);
-                    let sousfamily = document.createElement("li");
+                    let sousfamily = document.createElement("p");
                     sousfamily.innerHTML = element.fullname;
                     family.appendChild(sousfamily);
                 }
