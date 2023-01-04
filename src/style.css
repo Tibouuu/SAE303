@@ -4,11 +4,36 @@ body{
 }
 
 ul{
-    padding: 1em;
+    padding-bottom: 0.3em;
 }
 
 ul a{
     text-decoration: none;
     color: black;
-    font-weight: bold;
+}
+
+p{
+    margin: 0;
+}
+
+body > div{
+    margin: 2em;
+    background-color: whitesmoke;
+    width: 100%;
+    display: flex;
+}
+
+body ol ul div{
+    display: none;
+}
+
+h2{
+    margin: 0;
+    font-size: large;
+    transition: 1s;
+}
+
+#pie{
+    width: 80%;
+    flex-basis: 50%;
 }

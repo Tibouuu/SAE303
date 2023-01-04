@@ -564,26 +564,33 @@ req.addEventListener("load", (evt)=>{
             let donnees = [];
             for (element of tab)if (element.fullname == puzzle) donnees.push(element);
             console.log(donnees);
+            classement(donnees[0].fullname, tab);
             /* Camembert */ let reussie = [];
             let perdu = [];
             let inconnu = [];
+            let support = [];
             for (result of donnees){
                 if (result.status == "SAT") reussie.push(result);
                 if (result.status == "UNSAT") perdu.push(result);
                 if (result.status == "UNKNOWN") inconnu.push(result);
+                if (result.status == "UNSUPPORTED") support.push(result);
             }
             const data = [
                 {
-                    solver: "SAT",
+                    solver: "R\xe9ussite",
                     reussite: reussie.length
                 },
                 {
-                    solver: "UNSAT",
+                    solver: "Echec",
                     reussite: perdu.length
                 },
                 {
-                    solver: "UNKNOWN",
+                    solver: "Inconnu",
                     reussite: inconnu.length
+                },
+                {
+                    solver: "Non support\xe9",
+                    reussite: support.length
                 }
             ];
             const camembert = new (0, _auto.Chart)(document.getElementById("pie"), {
@@ -612,20 +619,37 @@ function makeTableau(data) {
     for (element of tab)if (puzzles.includes("<h2>" + element.family + "</h2>") == false) puzzles.push("<h2>" + element.family + "</h2>");
     for(let i = 0; i < puzzles.length; i++){
         let family = document.createElement("ul");
+        let deroule = document.createElement("div");
         let souspuzzles = [];
         family.innerHTML = puzzles[i];
+        family.addEventListener("mouseover", (e)=>deroule.style.display = "block");
+        family.addEventListener("mouseout", (e)=>deroule.style.display = "none");
         for (element of tab){
             if ("<h2>" + element.family + "</h2>" == puzzles[i]) {
                 if (souspuzzles.includes(element.fullname) == false) {
                     souspuzzles.push(element.fullname);
                     let sousfamily = document.createElement("p");
-                    sousfamily.innerHTML = element.fullname;
-                    family.appendChild(sousfamily);
+                    sousfamily.innerHTML = "<a href='#pie'>" + element.fullname + "</a>";
+                    deroule.appendChild(sousfamily);
                 }
             }
         }
+        family.appendChild(deroule);
         liste.appendChild(family);
     }
+}
+function classement(puzzlename, data) {
+    let tab = data;
+    console.log(tab);
+    let allattempts = tab.filter((r)=>r.fullname == puzzlename);
+    console.log(allattempts);
+    let satAttempts = allattempts.filter((r)=>r.status == "SAT").map(({ name , time  })=>({
+            ["name"]: name,
+            ["time"]: time
+        })).sort(function(a, b) {
+        return a.time - b.time;
+    });
+    console.log(satAttempts);
 }
 (0, _auto.Chart).register((0, _chartJs.Colors), (0, _chartJs.BubbleController), (0, _chartJs.PointElement), (0, _chartJs.CategoryScale), (0, _chartJs.LinearScale), (0, _chartJs.Legend));
 

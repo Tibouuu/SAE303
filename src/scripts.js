@@ -35,11 +35,13 @@ req.addEventListener("load", evt => {
                 }
             } 
             console.log(donnees);
-
+            
+            classement(donnees[0].fullname, tab);
             /* Camembert */
             let reussie = []
             let perdu = []
             let inconnu = []
+            let support = []
             for(result of donnees){
                 if(result.status == "SAT"){
                     reussie.push(result)
@@ -50,12 +52,16 @@ req.addEventListener("load", evt => {
                 if(result.status == "UNKNOWN"){
                     inconnu.push(result)
                 }
+                if(result.status == "UNSUPPORTED"){
+                    support.push(result)
+                }
             }
             
                 const data = [
-                    { solver: "SAT", reussite: reussie.length },
-                    { solver: "UNSAT", reussite: perdu.length },
-                    { solver: "UNKNOWN", reussite: inconnu.length },
+                    { solver: "Réussite", reussite: reussie.length },
+                    { solver: "Echec", reussite: perdu.length },
+                    { solver: "Inconnu", reussite: inconnu.length },
+                    { solver: "Non supporté", reussite: support.length },
                 ];
         
                 const camembert = new Chart(
@@ -74,7 +80,6 @@ req.addEventListener("load", evt => {
                         }
                     }
                 );
-                
         });
     }
 
@@ -99,21 +104,40 @@ function makeTableau(data) {
 
     for (let i = 0; i < puzzles.length; i++) {
         let family = document.createElement('ul')
+        let deroule = document.createElement('div')
+        
         let souspuzzles = []
         family.innerHTML = puzzles[i]
+        family.addEventListener('mouseover', (e) => deroule.style.display = "block")
+        family.addEventListener('mouseout', (e) => deroule.style.display = "none")
         for (element of tab) {
             if ("<h2>" + element.family + "</h2>" == puzzles[i]) {
                 if (souspuzzles.includes(element.fullname) == false) {
                     souspuzzles.push(element.fullname)
                     let sousfamily = document.createElement('p')
-                    sousfamily.innerHTML = element.fullname
-                    family.appendChild(sousfamily)
+                    sousfamily.innerHTML = "<a href='#pie'>" + element.fullname + "</a>";
+                    deroule.appendChild(sousfamily)
                 }
             }
         }
+        family.appendChild(deroule)
         liste.appendChild(family)
     }
 }
+
+function classement(puzzlename, data) {
+    let tab = data;
+    console.log(tab);
+    let allattempts = tab.filter((r) => r.fullname == puzzlename);
+    console.log(allattempts);
+    let satAttempts = allattempts
+      .filter((r) => r.status == "SAT")
+      .map(({ name, time }) => ({ ["name"]: name, ["time"]: time }))
+      .sort(function (a, b) {
+        return a.time - b.time;
+      });
+    console.log(satAttempts);
+  }
 
 
 import {

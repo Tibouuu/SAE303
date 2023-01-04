@@ -4,13 +4,38 @@ body {
 }
 
 ul {
-  padding: 1em;
+  padding-bottom: .3em;
 }
 
 ul a {
   color: #000;
-  font-weight: bold;
   text-decoration: none;
+}
+
+p {
+  margin: 0;
+}
+
+body > div {
+  width: 100%;
+  background-color: #f5f5f5;
+  margin: 2em;
+  display: flex;
+}
+
+body ol ul div {
+  display: none;
+}
+
+h2 {
+  margin: 0;
+  font-size: large;
+  transition: all 1s;
+}
+
+#pie {
+  width: 80%;
+  flex-basis: 50%;
 }
 
 /*# sourceMappingURL=index.2cdaf7bc.css.map */
