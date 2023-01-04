@@ -593,6 +593,24 @@ req.addEventListener("load", (evt)=>{
                     reussite: support.length
                 }
             ];
+            const dataPercent = [
+                {
+                    solver: "R\xe9ussite",
+                    reussite: reussie.length / donnees.length * 100
+                },
+                {
+                    solver: "Echec",
+                    reussite: perdu.length / donnees.length * 100
+                },
+                {
+                    solver: "Inconnu",
+                    reussite: inconnu.length / donnees.length * 100
+                },
+                {
+                    solver: "Non support\xe9",
+                    reussite: support.length / donnees.length * 100
+                }
+            ];
             const camembert = new (0, _auto.Chart)(document.getElementById("pie"), {
                 type: "pie",
                 data: {
@@ -608,6 +626,122 @@ req.addEventListener("load", (evt)=>{
                 options: {
                     responsive: false,
                     maintainAspectRatio: false
+                }
+            });
+            function puzzlefamily(data, donnees) {
+                let famille = donnees[0].family;
+                let allfam = data.filter((r)=>r.family == famille);
+                let reussie = [];
+                let perdu = [];
+                let inconnu = [];
+                let support = [];
+                for (result of allfam){
+                    if (result.status == "SAT") reussie.push(result);
+                    if (result.status == "UNSAT") perdu.push(result);
+                    if (result.status == "UNKNOWN") inconnu.push(result);
+                    if (result.status == "UNSUPPORTED") support.push(result);
+                }
+                return data = [
+                    {
+                        solver: "R\xe9ussite",
+                        reussite: reussie.length / allfam.length * 100
+                    },
+                    {
+                        solver: "Echec",
+                        reussite: perdu.length / allfam.length * 100
+                    },
+                    {
+                        solver: "Inconnu",
+                        reussite: inconnu.length / allfam.length * 100
+                    },
+                    {
+                        solver: "Non support\xe9",
+                        reussite: support.length / allfam.length * 100
+                    }
+                ];
+            }
+            function puzzletotal(tab) {
+                let reussie = [];
+                let perdu = [];
+                let inconnu = [];
+                let support = [];
+                for (result of tab){
+                    if (result.status == "SAT") reussie.push(result);
+                    if (result.status == "UNSAT") perdu.push(result);
+                    if (result.status == "UNKNOWN") inconnu.push(result);
+                    if (result.status == "UNSUPPORTED") support.push(result);
+                }
+                return total = [
+                    {
+                        solver: "R\xe9ussite",
+                        reussite: reussie.length / tab.length * 100
+                    },
+                    {
+                        solver: "Echec",
+                        reussite: perdu.length / tab.length * 100
+                    },
+                    {
+                        solver: "Inconnu",
+                        reussite: inconnu.length / tab.length * 100
+                    },
+                    {
+                        solver: "Non support\xe9",
+                        reussite: support.length / tab.length * 100
+                    }
+                ];
+            }
+            const datapie = {
+                labels: [
+                    "R\xe9ussite",
+                    "Echec",
+                    "Inconnu",
+                    "Non support\xe9"
+                ],
+                datasets: [
+                    {
+                        label: "donn\xe9es familles",
+                        data: puzzlefamily(tab, donnees).map((row)=>row.reussite),
+                        fill: true,
+                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                        borderColor: "rgb(255, 99, 132)",
+                        pointBackgroundColor: "rgb(255, 99, 132)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgb(255, 99, 132)"
+                    },
+                    {
+                        label: "donn\xe9es",
+                        data: dataPercent.map((row)=>row.reussite),
+                        fill: true,
+                        backgroundColor: "rgba(54, 162, 235, 0.2)",
+                        borderColor: "rgb(54, 162, 235)",
+                        pointBackgroundColor: "rgb(70, 162, 235)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgb(54, 162, 235)"
+                    },
+                    {
+                        label: "totale",
+                        data: puzzletotal(tab).map((row)=>row.reussite),
+                        fill: true,
+                        backgroundColor: "rgba(201, 203, 207,0.2)",
+                        borderColor: "rgb(201, 203, 207)",
+                        pointBackgroundColor: "rgb(201, 203, 207)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgb(54, 162, 235)"
+                    }
+                ]
+            };
+            const radar = new (0, _auto.Chart)(document.getElementById("radar"), {
+                type: "radar",
+                data: datapie,
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
                 }
             });
             /* Classement */ let classe = classement(donnees[0].fullname, tab);
