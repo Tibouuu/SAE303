@@ -156,8 +156,19 @@ req.addEventListener("load", (evt) => {
       const datapie = {
         labels: ["Réussite", "Echec","Inconnu","Non supporté"],
         datasets: [
+            {
+                label: "Pour le puzzle",
+                data: dataPercent.map((row) => row.reussite),
+                fill: true,
+                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                borderColor: "rgb(54, 162, 235)",
+                pointBackgroundColor: "rgb(70, 162, 235)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgb(54, 162, 235)",
+              },
           {
-            label: "données familles",
+            label: "Pour la famille concernée",
             data: puzzlefamily(tab,donnees).map((row)=>row.reussite),
             fill: true,
             backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -167,19 +178,9 @@ req.addEventListener("load", (evt) => {
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgb(255, 99, 132)",
           },
+
           {
-            label: "données",
-            data: dataPercent.map((row) => row.reussite),
-            fill: true,
-            backgroundColor: "rgba(54, 162, 235, 0.2)",
-            borderColor: "rgb(54, 162, 235)",
-            pointBackgroundColor: "rgb(70, 162, 235)",
-            pointBorderColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgb(54, 162, 235)",
-          },
-          {
-            label: "totale",
+            label: "Pour tous",
             data: puzzletotal(tab).map((row)=>row.reussite),
             fill: true,
             backgroundColor: "rgba(201, 203, 207,0.2)",

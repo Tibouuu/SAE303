@@ -699,18 +699,7 @@ req.addEventListener("load", (evt)=>{
                 ],
                 datasets: [
                     {
-                        label: "donn\xe9es familles",
-                        data: puzzlefamily(tab, donnees).map((row)=>row.reussite),
-                        fill: true,
-                        backgroundColor: "rgba(255, 99, 132, 0.2)",
-                        borderColor: "rgb(255, 99, 132)",
-                        pointBackgroundColor: "rgb(255, 99, 132)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgb(255, 99, 132)"
-                    },
-                    {
-                        label: "donn\xe9es",
+                        label: "Pour le puzzle",
                         data: dataPercent.map((row)=>row.reussite),
                         fill: true,
                         backgroundColor: "rgba(54, 162, 235, 0.2)",
@@ -721,7 +710,18 @@ req.addEventListener("load", (evt)=>{
                         pointHoverBorderColor: "rgb(54, 162, 235)"
                     },
                     {
-                        label: "totale",
+                        label: "Pour la famille concern\xe9e",
+                        data: puzzlefamily(tab, donnees).map((row)=>row.reussite),
+                        fill: true,
+                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                        borderColor: "rgb(255, 99, 132)",
+                        pointBackgroundColor: "rgb(255, 99, 132)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgb(255, 99, 132)"
+                    },
+                    {
+                        label: "Pour tous",
                         data: puzzletotal(tab).map((row)=>row.reussite),
                         fill: true,
                         backgroundColor: "rgba(201, 203, 207,0.2)",
