@@ -2,30 +2,51 @@ const req = new XMLHttpRequest();
 req.addEventListener("load", evt => {
     let data = JSON.parse(req.responseText);
     makeTableau(data);
-    (async function() {
+
+    let tab = data[2].data
+    const allpuzzle = tab.map(function (puzzle) { return puzzle.family });
+    const datared = allpuzzle.reduce((accumulator, value) => {
+        accumulator[value] = ++accumulator[value] || 1;
+        return accumulator;
+    }, {});
+    let puzzlenames = new Set(allpuzzle);
+    let puzzlestab = Array.from(puzzlenames)
+    
+    console.log(allpuzzle);
+    console.log(datared);
+    console.log(puzzlestab)
+    
+    const people = tab.map(function (puzzle) { return puzzle.name });
+    const users = new Set(people);
+    const usertab = Array.from(users);
+    
+    console.log(usertab);
+
+    (async function () {
         const data = [
-          { solver: "SAT", reussite: 43 },
-          { solver: "UNSAT", reussite: 23 },
-          { solver: "UNKNOWN", reussite: 6 },
+            { solver: "SAT", reussite: 43 },
+            { solver: "UNSAT", reussite: 23 },
+            { solver: "UNKNOWN", reussite: 6 },
         ];
-      
+
         new Chart(
-          document.getElementById('pie'),
-          {
-            type: 'pie',
-            data: {
-              labels: data.map(row => row.solver),
-              datasets: [
-                {
-                  label: '',
-                  data: data.map(row => row.reussite),
-                  hoverOffset: data.map(row => row.reussite)
+            document.getElementById('pie'),
+            {
+                type: 'pie',
+                data: {
+                    labels: data.map(row => row.solver),
+                    datasets: [
+                        {
+                            label: '',
+                            data: data.map(row => row.reussite),
+                            hoverOffset: data.map(row => row.reussite)
+                        }
+                    ]
                 }
-              ]
             }
-          }
         );
-      })();
+    })();
+
 });
 req.open("GET", "https://www.cril.univ-artois.fr/~lecoutre/teaching/jssae/code5/results.json");
 req.send()
@@ -58,6 +79,8 @@ function makeTableau(data) {
     }
 }
 
+
+
 import {
     Chart,
     Colors,
@@ -66,17 +89,17 @@ import {
     LinearScale,
     PointElement,
     Legend
-  } from 'chart.js'
-  
-  Chart.register(
+} from 'chart.js'
+
+Chart.register(
     Colors,
     BubbleController,
     PointElement,
     CategoryScale,
     LinearScale,
     Legend
-  );
-  
-  import { Chart } from 'chart.js/auto'
-  
+);
+
+import { Chart } from 'chart.js/auto'
+
 
