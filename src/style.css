@@ -22,11 +22,12 @@ ul a:hover{
     transition: 0.5s;
 }
 
-body > div{
+.infos{
     margin: 2em;
+    padding: 1em;
     background-color: whitesmoke;
-    width: 100%;
     display: flex;
+    justify-content: space-between;
     border-radius: 50px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -42,6 +43,16 @@ h2{
 }
 
 #pie{
-    width: 80%;
     flex-basis: 50%;
+    width: 80%;
 }
+
+#rank{
+    flex-basis: 50%;
+    text-align: center;
+}
+
+#rank h3{
+    font-size: xxx-large;
+}
+

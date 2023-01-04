@@ -604,8 +604,27 @@ req.addEventListener("load", (evt)=>{
                             hoverOffset: data.map((row)=>row.reussite)
                         }
                     ]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false
                 }
             });
+            /* Classement */ let classe = classement(donnees[0].fullname, tab);
+            let rang = document.getElementById("rank");
+            let premier = document.createElement("h3");
+            if (classe.length != 0) {
+                premier.innerHTML = classe[0].name;
+                rang.appendChild(premier);
+                for(let i = 1; i < classe.length; i++){
+                    let second = document.createElement("h4");
+                    second.innerHTML = classe[i].name;
+                    rang.appendChild(second);
+                }
+            } else {
+                premier.innerHTML = "Personne n'a r\xe9ussi ce puzzle...";
+                rang.appendChild(premier);
+            }
             const labels = [];
             for (const e1 of classement(donnees[0].fullname, tab))labels.push(e1.name);
             let classBarres = [];
