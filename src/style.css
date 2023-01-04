@@ -27,6 +27,8 @@ body > div{
     background-color: whitesmoke;
     width: 100%;
     display: flex;
+    border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 body ol ul div{

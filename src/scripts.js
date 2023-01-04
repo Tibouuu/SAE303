@@ -94,7 +94,7 @@ req.send()
 
 function makeTableau(data) {
     let liste = document.querySelector('ol')
-    liste.innerHTML = "<h1>Puzzles - SAE303</h1>"
+    liste.innerHTML = "<h3>Sélectionnez votre puzzle pour obtenir des informations statistiques dessus.</h3>"
     let tab = data[2].data
     let puzzles = []
     for (element of tab) {
