@@ -22,17 +22,14 @@ ul a:hover {
   transition: all .5s;
 }
 
-.infos {
+.infos, .stats {
   background-color: #f5f5f5;
   border-radius: 50px;
+  justify-content: space-between;
   margin: 2em;
   padding: 1em;
   display: flex;
   box-shadow: 0 5px 15px #00000059;
-}
-
-section {
-  display: flex;
 }
 
 body ol ul div {

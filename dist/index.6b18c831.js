@@ -625,6 +625,50 @@ req.addEventListener("load", (evt)=>{
                 premier.innerHTML = "Personne n'a r\xe9ussi ce puzzle...";
                 rang.appendChild(premier);
             }
+            const labels = [];
+            for (const e1 of classement(donnees[0].fullname, tab))labels.push(e1.name);
+            let classBarres = [];
+            for (const e2 of classement(donnees[0].fullname, tab))classBarres.push(e2.time);
+            console.log("REGARDE");
+            console.log(classBarres);
+            const databarres = {
+                labels: labels,
+                datasets: [
+                    {
+                        data: classBarres,
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(201, 203, 207, 0.2)"
+                        ],
+                        borderColor: [
+                            "rgb(255, 99, 132)",
+                            "rgb(255, 159, 64)",
+                            "rgb(255, 205, 86)",
+                            "rgb(75, 192, 192)",
+                            "rgb(54, 162, 235)",
+                            "rgb(153, 102, 255)",
+                            "rgb(201, 203, 207)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            };
+            const barres = new (0, _auto.Chart)(document.getElementById("bar"), {
+                type: "bar",
+                data: databarres,
+                options: {
+                    scale: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         });
     }
 /*Création des graphiques*/ });
@@ -632,7 +676,7 @@ req.open("GET", "https://www.cril.univ-artois.fr/~lecoutre/teaching/jssae/code5/
 req.send();
 function makeTableau(data) {
     let liste = document.querySelector("ol");
-    liste.innerHTML = "<h3>S\xe9lectionnez votre puzzle pour obtenir des informations statistiques dessus.</h3>";
+    liste.innerHTML = "<h3>S\xe9lectionnez votre puzzle pour obtenir des informations statistiques dessus. <br />Rechargez la page pour recommencer.</h3>";
     let tab = data[2].data;
     let puzzles = [];
     for (element of tab)if (puzzles.includes("<h2>" + element.family + "</h2>") == false) puzzles.push("<h2>" + element.family + "</h2>");
