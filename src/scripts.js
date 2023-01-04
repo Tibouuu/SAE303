@@ -197,11 +197,15 @@ req.addEventListener("load", (evt) => {
         type: "radar",
         data: datapie,
         options: {
+            clip: 100,
           elements: {
             line: {
               borderWidth: 3,
             },
           },
+          scales: {
+            r:{max:100}
+          }
         },
       });
 
