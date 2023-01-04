@@ -25,15 +25,23 @@ ul a:hover {
 .infos {
   background-color: #f5f5f5;
   border-radius: 50px;
-  justify-content: space-between;
   margin: 2em;
   padding: 1em;
   display: flex;
   box-shadow: 0 5px 15px #00000059;
 }
 
+section {
+  display: flex;
+}
+
 body ol ul div {
   display: none;
+}
+
+h1 {
+  color: #f5f5f5;
+  text-align: center;
 }
 
 h2 {
@@ -42,8 +50,11 @@ h2 {
   transition: all 1s;
 }
 
+ol h3 {
+  text-align: center;
+}
+
 #pie {
-  width: 80%;
   flex-basis: 50%;
 }
 

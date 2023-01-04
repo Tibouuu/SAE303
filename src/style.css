@@ -25,11 +25,14 @@ ul a:hover{
 .infos{
     margin: 2em;
     padding: 1em;
-    background-color: whitesmoke;
     display: flex;
-    justify-content: space-between;
+    background-color: whitesmoke;
     border-radius: 50px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+section{
+    display: flex;
 }
 
 body ol ul div{
