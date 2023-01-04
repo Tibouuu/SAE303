@@ -1,91 +1,208 @@
 const req = new XMLHttpRequest();
-req.addEventListener("load", evt => {
-    let data = JSON.parse(req.responseText);
-    /*Appel de la liste des puzzles*/
-    makeTableau(data);
+req.addEventListener("load", (evt) => {
+  let data = JSON.parse(req.responseText);
+  /*Appel de la liste des puzzles*/
+  makeTableau(data);
 
-    /*Récupération des données*/
-    let tab = data[2].data
-    const allpuzzle = tab.map(function (puzzle) { return puzzle.family });
-    const datared = allpuzzle.reduce((accumulator, value) => {
-        accumulator[value] = ++accumulator[value] || 1;
-        return accumulator;
-    }, {});
-    let puzzlenames = new Set(allpuzzle);
-    let puzzlestab = Array.from(puzzlenames)
+  /*Récupération des données*/
+  let tab = data[2].data;
+  const allpuzzle = tab.map(function (puzzle) {
+    return puzzle.family;
+  });
+  const datared = allpuzzle.reduce((accumulator, value) => {
+    accumulator[value] = ++accumulator[value] || 1;
+    return accumulator;
+  }, {});
+  let puzzlenames = new Set(allpuzzle);
+  let puzzlestab = Array.from(puzzlenames);
 
-    console.log(allpuzzle);
-    console.log(datared);
-    console.log(puzzlestab)
+  console.log(allpuzzle);
+  console.log(datared);
+  console.log(puzzlestab);
 
-    const people = tab.map(function (puzzle) { return puzzle.name });
-    const users = new Set(people);
-    const usertab = Array.from(users);
+  const people = tab.map(function (puzzle) {
+    return puzzle.name;
+  });
+  const users = new Set(people);
+  const usertab = Array.from(users);
 
-    console.log(usertab);
+  console.log(usertab);
 
-    let recup = document.querySelectorAll('p')
-    for (p of recup) {
-        let puzzle = p.textContent
-        p.addEventListener('click', (e) => {
-            let donnees = []
-            for (element of tab) {
-                if (element.fullname == puzzle) {
-                    donnees.push(element)
-                }
-            }
-            console.log(donnees);
+  let recup = document.querySelectorAll("p");
+  for (p of recup) {
+    let puzzle = p.textContent;
+    p.addEventListener("click", (e) => {
+      let donnees = [];
+      for (element of tab) {
+        if (element.fullname == puzzle) {
+          donnees.push(element);
+        }
+      }
+      console.log(donnees);
 
-            classement(donnees[0].fullname, tab);
+      classement(donnees[0].fullname, tab);
 
-            /* Camembert */
-            let reussie = []
-            let perdu = []
-            let inconnu = []
-            let support = []
-            for (result of donnees) {
-                if (result.status == "SAT") {
-                    reussie.push(result)
-                }
-                if (result.status == "UNSAT") {
-                    perdu.push(result)
-                }
-                if (result.status == "UNKNOWN") {
-                    inconnu.push(result)
-                }
-                if (result.status == "UNSUPPORTED") {
-                    support.push(result)
-                }
-            }
+      /* Camembert */
+      let reussie = [];
+      let perdu = [];
+      let inconnu = [];
+      let support = [];
+      for (result of donnees) {
+        if (result.status == "SAT") {
+          reussie.push(result);
+        }
+        if (result.status == "UNSAT") {
+          perdu.push(result);
+        }
+        if (result.status == "UNKNOWN") {
+          inconnu.push(result);
+        }
+        if (result.status == "UNSUPPORTED") {
+          support.push(result);
+        }
+      }
 
-            const data = [
-                { solver: "Réussite", reussite: reussie.length },
-                { solver: "Echec", reussite: perdu.length },
-                { solver: "Inconnu", reussite: inconnu.length },
-                { solver: "Non supporté", reussite: support.length },
-            ];
+      const data = [
+        { solver: "Réussite", reussite: reussie.length },
+        { solver: "Echec", reussite: perdu.length },
+        { solver: "Inconnu", reussite: inconnu.length },
+        { solver: "Non supporté", reussite: support.length },
+      ];
 
-            const camembert = new Chart(
-                document.getElementById('pie'),
-                {
-                    type: 'pie',
-                    data: {
-                        labels: data.map(row => row.solver),
-                        datasets: [
-                            {
-                                label: '',
-                                data: data.map(row => row.reussite),
-                                hoverOffset: data.map(row => row.reussite)
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: false,
-                        maintainAspectRatio: false
-                    }
+      const dataPercent = [
+        { solver: "Réussite", reussite: (reussie.length/donnees.length)*100 },
+        { solver: "Echec", reussite: (perdu.length/donnees.length)*100 },
+        { solver: "Inconnu", reussite: (inconnu.length/donnees.length)*100 },
+        { solver: "Non supporté", reussite: (support.length/donnees.length)*100 },
+      ];
 
-                }
-            );
+      const camembert = new Chart(document.getElementById("pie"), {
+        type: "pie",
+        data: {
+          labels: data.map((row) => row.solver),
+          datasets: [
+            {
+              label: "",
+              data: data.map((row) => row.reussite),
+              hoverOffset: data.map((row) => row.reussite),
+            },
+          ],
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: false,
+        },
+      });
+
+
+    function puzzlefamily(data,donnees) {
+        let famille = donnees[0].family;
+        let allfam = data.filter(r=>r.family == famille)
+        let reussie = [];
+        let perdu = [];
+        let inconnu = [];
+        let support = [];
+      for (result of allfam) {
+        if (result.status == "SAT") {
+          reussie.push(result);
+        }
+        if (result.status == "UNSAT") {
+          perdu.push(result);
+        }
+        if (result.status == "UNKNOWN") {
+          inconnu.push(result);
+        }
+        if (result.status == "UNSUPPORTED") {
+          support.push(result);
+        }
+      }
+      return data = [
+        { solver: "Réussite", reussite: (reussie.length/allfam.length)*100 },
+        { solver: "Echec", reussite: (perdu.length/allfam.length)*100 },
+        { solver: "Inconnu", reussite: (inconnu.length/allfam.length)*100 },
+        { solver: "Non supporté", reussite: (support.length/allfam.length)*100 },
+      ];
+    }
+
+    function puzzletotal(tab) {
+        let reussie = [];
+        let perdu = [];
+        let inconnu = [];
+        let support = [];
+      for (result of tab) {
+        if (result.status == "SAT") {
+          reussie.push(result);
+        }
+        if (result.status == "UNSAT") {
+          perdu.push(result);
+        }
+        if (result.status == "UNKNOWN") {
+          inconnu.push(result);
+        }
+        if (result.status == "UNSUPPORTED") {
+          support.push(result);
+        }
+      }
+
+      return total = [
+        { solver: "Réussite", reussite: (reussie.length/tab.length)*100 },
+        { solver: "Echec", reussite: (perdu.length/tab.length)*100 },
+        { solver: "Inconnu", reussite: (inconnu.length/tab.length)*100 },
+        { solver: "Non supporté", reussite: (support.length/tab.length)*100 },
+      ];
+        
+    }
+
+      const datapie = {
+        labels: ["Réussite", "Echec","Inconnu","Non supporté"],
+        datasets: [
+          {
+            label: "données familles",
+            data: puzzlefamily(tab,donnees).map((row)=>row.reussite),
+            fill: true,
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgb(255, 99, 132)",
+            pointBackgroundColor: "rgb(255, 99, 132)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgb(255, 99, 132)",
+          },
+          {
+            label: "données",
+            data: dataPercent.map((row) => row.reussite),
+            fill: true,
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgb(54, 162, 235)",
+            pointBackgroundColor: "rgb(70, 162, 235)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgb(54, 162, 235)",
+          },
+          {
+            label: "totale",
+            data: puzzletotal(tab).map((row)=>row.reussite),
+            fill: true,
+            backgroundColor: "rgba(201, 203, 207,0.2)",
+            borderColor: "rgb(201, 203, 207)",
+            pointBackgroundColor: "rgb(201, 203, 207)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgb(54, 162, 235)",
+          }
+        ],
+      };
+
+      const radar = new Chart(document.getElementById("radar"), {
+        type: "radar",
+        data: datapie,
+        options: {
+          elements: {
+            line: {
+              borderWidth: 3,
+            },
+          },
+        },
+      });
 
             /* Classement */
             let classe = classement(donnees[0].fullname, tab);
@@ -113,68 +230,62 @@ req.addEventListener("load", evt => {
                     labels.push(e.name)
                 }
 
-                let classBarres = [];
-                for(const e of classement(donnees[0].fullname, tab)){
-                    classBarres.push(e.time)
-                }
-                    console.log("REGARDE")
-                console.log( classBarres);
+      let classBarres = [];
+      for (const e of classement(donnees[0].fullname, tab)) {
+        classBarres.push(e.time);
+      }
+      console.log("REGARDE");
+      console.log(classBarres);
 
-                const databarres ={ 
-                    labels: labels,
-                    datasets:[{
-                    data: classBarres,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(201, 203, 207, 0.2)'
-                      ],
-                      borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                      ],
-                      borderWidth: 1
-                    }]
-                     };
+      const databarres = {
+        labels: labels,
+        datasets: [
+          {
+            data: classBarres,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 205, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(201, 203, 207, 0.2)",
+            ],
+            borderColor: [
+              "rgb(255, 99, 132)",
+              "rgb(255, 159, 64)",
+              "rgb(255, 205, 86)",
+              "rgb(75, 192, 192)",
+              "rgb(54, 162, 235)",
+              "rgb(153, 102, 255)",
+              "rgb(201, 203, 207)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
 
+      const barres = new Chart(document.getElementById("bar"), {
+        type: "bar",
+        data: databarres,
+        options: {
+          scale: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    });
+  }
 
-                const barres = new Chart(
-                    document.getElementById('bar'),
-                    {
-                        type: 'bar',
-                        data: databarres,
-                        options:{
-                            scale: {
-                                y:{
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    }
-                );
-        });
-
-
-
-    }
-
-
-
-    /*Création des graphiques*/
-
-
+  /*Création des graphiques*/
 });
-req.open("GET", "https://www.cril.univ-artois.fr/~lecoutre/teaching/jssae/code5/results.json");
-req.send()
+req.open(
+  "GET",
+  "https://www.cril.univ-artois.fr/~lecoutre/teaching/jssae/code5/results.json"
+);
+req.send();
 
 function makeTableau(data) {
     let liste = document.querySelector('ol')
@@ -186,64 +297,67 @@ function makeTableau(data) {
             puzzles.push("<h2>" + element.family + "</h2>")
     }
 
-    for (let i = 0; i < puzzles.length; i++) {
-        let family = document.createElement('ul')
-        let deroule = document.createElement('div')
+  for (let i = 0; i < puzzles.length; i++) {
+    let family = document.createElement("ul");
+    let deroule = document.createElement("div");
 
-        let souspuzzles = []
-        family.innerHTML = puzzles[i]
-        family.addEventListener('mouseover', (e) => deroule.style.display = "block")
-        family.addEventListener('mouseout', (e) => deroule.style.display = "none")
-        for (element of tab) {
-            if ("<h2>" + element.family + "</h2>" == puzzles[i]) {
-                if (souspuzzles.includes(element.fullname) == false) {
-                    souspuzzles.push(element.fullname)
-                    let sousfamily = document.createElement('p')
-                    sousfamily.innerHTML = "<a href='#pie'>" + element.fullname + "</a>";
-                    deroule.appendChild(sousfamily)
-                }
-            }
+    let souspuzzles = [];
+    family.innerHTML = puzzles[i];
+    family.addEventListener(
+      "mouseover",
+      (e) => (deroule.style.display = "block")
+    );
+    family.addEventListener(
+      "mouseout",
+      (e) => (deroule.style.display = "none")
+    );
+    for (element of tab) {
+      if ("<h2>" + element.family + "</h2>" == puzzles[i]) {
+        if (souspuzzles.includes(element.fullname) == false) {
+          souspuzzles.push(element.fullname);
+          let sousfamily = document.createElement("p");
+          sousfamily.innerHTML = "<a href='#pie'>" + element.fullname + "</a>";
+          deroule.appendChild(sousfamily);
         }
-        family.appendChild(deroule)
-        liste.appendChild(family)
+      }
     }
+    family.appendChild(deroule);
+    liste.appendChild(family);
+  }
 }
 
 function classement(puzzlename, data) {
-    let tab = data;
-    console.log(tab);
-    let allattempts = tab.filter((r) => r.fullname == puzzlename);
-    console.log(allattempts);
-    let satAttempts = allattempts
-        .filter((r) => r.status == "SAT")
-        .map(({ name, time }) => ({ ["name"]: name, ["time"]: time }))
-        .sort(function (a, b) {
-            return a.time - b.time;
-        });
-    return satAttempts;
+  let tab = data;
+  console.log(tab);
+  let allattempts = tab.filter((r) => r.fullname == puzzlename);
+  console.log(allattempts);
+  let satAttempts = allattempts
+    .filter((r) => r.status == "SAT")
+    .map(({ name, time }) => ({ ["name"]: name, ["time"]: time }))
+    .sort(function (a, b) {
+      return a.time - b.time;
+    });
+  return satAttempts;
 }
 
-
 import {
-    Chart,
-    Colors,
-    BubbleController,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    Legend
-} from 'chart.js'
+  Chart,
+  Colors,
+  BubbleController,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Legend,
+} from "chart.js";
 
 Chart.register(
-    Colors,
-    BubbleController,
-    PointElement,
-    CategoryScale,
-    LinearScale,
-    Legend
+  Colors,
+  BubbleController,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Legend
 );
 
-import { Chart } from 'chart.js/auto'
+import { Chart } from "chart.js/auto";
 /*import { S } from 'chart.js/dist/chunks/helpers.core';*/
-
-

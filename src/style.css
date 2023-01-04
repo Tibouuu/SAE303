@@ -27,7 +27,7 @@ ul a:hover{
     padding: 1em;
     background-color: whitesmoke;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     border-radius: 50px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -59,6 +59,7 @@ ol h3{
     flex-basis: 50%;
     text-align: center;
 }
+
 
 #rank h3{
     font-size: xxx-large;
