@@ -1,7 +1,7 @@
 const req = new XMLHttpRequest();
 req.addEventListener("load", evt => {
     let data = JSON.parse(req.responseText);
-    /*Appel de la liste des puzzles*/ 
+    /*Appel de la liste des puzzles*/
     makeTableau(data);
 
     /*Récupération des données*/
@@ -13,78 +13,106 @@ req.addEventListener("load", evt => {
     }, {});
     let puzzlenames = new Set(allpuzzle);
     let puzzlestab = Array.from(puzzlenames)
-    
+
     console.log(allpuzzle);
     console.log(datared);
     console.log(puzzlestab)
-    
+
     const people = tab.map(function (puzzle) { return puzzle.name });
     const users = new Set(people);
     const usertab = Array.from(users);
-    
+
     console.log(usertab);
 
     let recup = document.querySelectorAll('p')
-    for(p of recup){
+    for (p of recup) {
         let puzzle = p.textContent
         p.addEventListener('click', (e) => {
             let donnees = []
-            for(element of tab){
-                if(element.fullname == puzzle){
+            for (element of tab) {
+                if (element.fullname == puzzle) {
                     donnees.push(element)
                 }
-            } 
+            }
             console.log(donnees);
-            
+
             classement(donnees[0].fullname, tab);
+
             /* Camembert */
             let reussie = []
             let perdu = []
             let inconnu = []
             let support = []
-            for(result of donnees){
-                if(result.status == "SAT"){
+            for (result of donnees) {
+                if (result.status == "SAT") {
                     reussie.push(result)
-                } 
-                if(result.status == "UNSAT"){
+                }
+                if (result.status == "UNSAT") {
                     perdu.push(result)
-                } 
-                if(result.status == "UNKNOWN"){
+                }
+                if (result.status == "UNKNOWN") {
                     inconnu.push(result)
                 }
-                if(result.status == "UNSUPPORTED"){
+                if (result.status == "UNSUPPORTED") {
                     support.push(result)
                 }
             }
-            
-                const data = [
-                    { solver: "Réussite", reussite: reussie.length },
-                    { solver: "Echec", reussite: perdu.length },
-                    { solver: "Inconnu", reussite: inconnu.length },
-                    { solver: "Non supporté", reussite: support.length },
-                ];
-        
-                const camembert = new Chart(
-                    document.getElementById('pie'),
-                    {
-                        type: 'pie',
-                        data: {
-                            labels: data.map(row => row.solver),
-                            datasets: [
-                                {
-                                    label: '',
-                                    data: data.map(row => row.reussite),
-                                    hoverOffset: data.map(row => row.reussite)
-                                }
-                            ]
-                        }
+
+            const data = [
+                { solver: "Réussite", reussite: reussie.length },
+                { solver: "Echec", reussite: perdu.length },
+                { solver: "Inconnu", reussite: inconnu.length },
+                { solver: "Non supporté", reussite: support.length },
+            ];
+
+            const camembert = new Chart(
+                document.getElementById('pie'),
+                {
+                    type: 'pie',
+                    data: {
+                        labels: data.map(row => row.solver),
+                        datasets: [
+                            {
+                                label: '',
+                                data: data.map(row => row.reussite),
+                                hoverOffset: data.map(row => row.reussite)
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false
                     }
-                );
+
+                }
+            );
+
+            /* Classement */
+            let classe = classement(donnees[0].fullname, tab);
+            let rang = document.getElementById('rank')
+            let premier = document.createElement('h3')
+            if (classe.length != 0) {
+                premier.innerHTML = classe[0].name
+                rang.appendChild(premier)
+                for(let i = 1; i < classe.length; i++){
+                    let second = document.createElement('h4')
+                    second.innerHTML = classe[i].name
+                    rang.appendChild(second)
+                }
+            } else{
+                premier.innerHTML = "Personne n'a réussi ce puzzle..."
+                rang.appendChild(premier)
+            }
+
+
         });
+
+
+
     }
 
 
-  
+
     /*Création des graphiques*/
 
 
@@ -105,7 +133,7 @@ function makeTableau(data) {
     for (let i = 0; i < puzzles.length; i++) {
         let family = document.createElement('ul')
         let deroule = document.createElement('div')
-        
+
         let souspuzzles = []
         family.innerHTML = puzzles[i]
         family.addEventListener('mouseover', (e) => deroule.style.display = "block")
@@ -131,13 +159,13 @@ function classement(puzzlename, data) {
     let allattempts = tab.filter((r) => r.fullname == puzzlename);
     console.log(allattempts);
     let satAttempts = allattempts
-      .filter((r) => r.status == "SAT")
-      .map(({ name, time }) => ({ ["name"]: name, ["time"]: time }))
-      .sort(function (a, b) {
-        return a.time - b.time;
-      });
-    console.log(satAttempts);
-  }
+        .filter((r) => r.status == "SAT")
+        .map(({ name, time }) => ({ ["name"]: name, ["time"]: time }))
+        .sort(function (a, b) {
+            return a.time - b.time;
+        });
+    return satAttempts;
+}
 
 
 import {
