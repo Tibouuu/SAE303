@@ -36,15 +36,23 @@ body ol ul div{
     display: none;
 }
 
+h1{
+    color: whitesmoke;
+    text-align: center;
+}
+
 h2{
     margin: 0;
     font-size: large;
     transition: 1s;
 }
 
+ol h3{
+    text-align: center;
+}
+
 #pie{
     flex-basis: 50%;
-    width: 80%;
 }
 
 #rank{

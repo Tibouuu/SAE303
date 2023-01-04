@@ -92,11 +92,11 @@ req.addEventListener("load", evt => {
             let rang = document.getElementById('rank')
             let premier = document.createElement('h3')
             if (classe.length != 0) {
-                premier.innerHTML = classe[0].name
+                premier.innerHTML = classe[0].name + " - " + classe[0].time 
                 rang.appendChild(premier)
                 for(let i = 1; i < classe.length; i++){
                     let second = document.createElement('h4')
-                    second.innerHTML = classe[i].name
+                    second.innerHTML = classe[i].name + " - " + classe[i].time 
                     rang.appendChild(second)
                 }
             } else{
