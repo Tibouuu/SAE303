@@ -8,7 +8,7 @@ Notre architecture de visualisation de données se compose de deux parties disti
 
 __Bibliothèque utilisée__
 
-Nous avons opté pour l'utilisation de Chart.js pour les graphiques du projet qui sont :
+Nous avons opté pour l'utilisation de Github pour la gestion de projet, et chart.js pour les graphiques du projet qui sont :
 
   - Un camembert présentant pour un puzzle spécifique le nombre de solver ayant réussi, perdu, ou autre.
   - Un classement des solvers ayant réussi le puzzle en fonction du temps qu'ils ont mis.
@@ -19,5 +19,7 @@ __Problèmes rencontrés__
 - Erreurs et difficultés avec git pour régler certains conflits
 - Il est obligatoire d'actualiser la page pour changer de graphiques concernant les puzzles, une fois des données affichées, elles ne se suppriment pas sauf si la page et rechargée pour laisser place à d'autres données sélectionnées, et nous n'avons pas trouvé de solution.
 
-__
 
+
+![Capture d’écran 2023-01-04 160933](https://user-images.githubusercontent.com/98033699/210585831-86c227e9-32a0-419f-beb2-771d3043335d.png)
+![Capture d’écran 2023-01-04 161036](https://user-images.githubusercontent.com/98033699/210586034-ae4fd1fb-593f-458b-99cc-14c2038075fd.png)
